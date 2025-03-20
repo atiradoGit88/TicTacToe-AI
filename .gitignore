@@ -1,0 +1,11 @@
+x# Python cache files
+__pycache__/
+*.py[cod]
+*.swp
+
+# Virtual environment
+venv/
+env/
+
+# Mac system files
+.DS_Store
