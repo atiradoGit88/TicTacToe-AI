@@ -123,23 +123,27 @@ def utility(board):
 
 def minimax(board):
     if terminal(board):
-        return EMPTY
+        return None
     
     current_player = player(board)
-    best_value = float('-inf')
+
+    if board == initial_state():
+        return random.choice(list(actions(board)))
+    
+    best_value = float('-inf') if current_player == X else float('inf')
     best_moves = []
 
     for action in actions(board):
         new_board = result(board, action)
         value = minimax_value(new_board)
             
-    if (current_player == X and value > best_value) or (current_player == 0 and value < best_value):
-        best_value = value
-        best_moves = [action]
-    elif value == best_value:
-        best_moves.append(action)
-
-    return random.choice(best_moves)
+        if (current_player == X and value > best_value) or (current_player == O and value < best_value):
+            best_value = value
+            best_moves = [action]
+        elif value == best_value:
+            best_moves.append(action)
+    
+    return random.choice(best_moves) if best_moves else None
 
 
 def minimax_value(board):
@@ -150,14 +154,12 @@ def minimax_value(board):
         value = float('-inf')
         for action in actions(board):
             new_value = minimax_value(result(board, action))
-            print(f"Evaluating X action {action}, value = {new_value}")
             value = max(value, new_value)
         return value
     else:
         value = float('inf')
         for action in actions(board):
             new_value = minimax_value(result(board, action))
-            print(f"Evaluating O action {action}, value = {new_value}")
             value = min(value, new_value)
         return value
 
