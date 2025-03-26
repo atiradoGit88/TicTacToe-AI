@@ -1,6 +1,7 @@
 """
 Tic Tac Toe Player
 """
+import random
 import logging
 logging.basicConfig(level=logging.DEBUG)
 import math
@@ -120,37 +121,31 @@ def utility(board):
         return 0
 
 
-
 def minimax(board):
     if terminal(board):
         return EMPTY
     
     current_player = player(board)
-    if current_player == X:
-        best_value = float('-inf')
-        best_move = EMPTY
-        for action in actions(board):
-            new_board = result(board, action)
-            value = minimax_value(new_board)
-            if value > best_value:
-                best_value = value
-                best_move = action
-    else:
-        best_value = float('inf')
-        best_move = None
-        for action in actions(board):
-            new_board = result(board, action)
-            value = minimax_value(new_board)
-            if value < best_value:
-                best_value = value
-                best_move = action
+    best_value = float('-inf')
+    best_moves = []
 
-    return best_move
+    for action in actions(board):
+        new_board = result(board, action)
+        value = minimax_value(new_board)
+            
+    if (current_player == X and value > best_value) or (current_player == 0 and value < best_value):
+        best_value = value
+        best_moves = [action]
+    elif value == best_value:
+        best_moves.append(action)
+
+    return random.choice(best_moves)
+
 
 def minimax_value(board):
     if terminal(board):
         return utility(board)
-
+    
     if player(board) == X:
         value = float('-inf')
         for action in actions(board):
